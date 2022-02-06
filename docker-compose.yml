@@ -1,0 +1,42 @@
+version: '3'
+services:
+  go-kafka-simple-producer:
+    container_name: go-kafka-simple-producer
+    build: ./producer
+    volumes:
+      - ./:/go/src/project
+    depends_on:
+      - go-kafka-simple-kafka
+      - go-kafka-simple-zookeeper
+    networks:
+      - go-kafka-simple-net
+  go-kafka-simple-consumer:
+    container_name: go-kafka-simple-consumer
+    build: ./consumer
+    volumes:
+      - ./:/go/src/project
+    depends_on:
+      - go-kafka-simple-kafka
+      - go-kafka-simple-zookeeper
+    networks:
+      - go-kafka-simple-net
+  go-kafka-simple-zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: go-kafka-simple-zookeeper
+    ports:
+      - 2181:2181
+    networks:
+      - go-kafka-simple-net
+  go-kafka-simple-kafka:
+    image: wurstmeister/kafka
+    container_name: go-kafka-simple-kafka
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: go-kafka-simple-kafka
+      KAFKA_ZOOKEEPER_CONNECT: go-kafka-simple-zookeeper:2181
+    networks:
+      - go-kafka-simple-net
+networks:
+  go-kafka-simple-net:
+    driver: bridge
