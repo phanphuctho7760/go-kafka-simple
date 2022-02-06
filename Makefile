@@ -1,6 +1,6 @@
 init:
-	cd producer && go mod vendor
-	cd consumer && go mod vendor
+	cd producer && go mod vendor && cp .env.example .env
+	cd consumer && go mod vendor && cp .env.example .env
 build:
 	docker compose up -d --build
 start:
