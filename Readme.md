@@ -25,7 +25,7 @@ make clear
 ```
 6. Other command
 ```
-make star
+make start
 make restart
 make stop
 make info
